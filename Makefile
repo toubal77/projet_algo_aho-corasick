@@ -23,4 +23,4 @@ ac-hachage.o: ac-hachage.c
 	$(CC) -c $(CFLAGS) $^ -o $@
 
 clean:
-	rm -f *.o genere-mots genere-texte texte3.txt mots3.txt
+	rm -f *.o genere-mots genere-texte texte3.txt mots3.txt ac-hachage
