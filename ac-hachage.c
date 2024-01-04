@@ -7,6 +7,9 @@
 // Facteur de charge utilisé pour déterminer la taille initiale du tableau de transitions
 #define LOAD_FACTOR 0.75
 
+// Taille initiale du buffer pour la lecture des mots depuis un fichier
+#define BUFFSIZE_INIT 64
+
 // Structure représentant un trie
 struct _list {
     int startNode;
@@ -24,6 +27,11 @@ struct _trie {
     List *transition;
     size_t *finite;
 };
+
+// Fonction pour libérer la mémoire associée à un trie (interface publique)
+void removeTrie(Trie *trie) {
+    _removeTrie(trie);
+}
 
 // Fonction utilitaire pour libérer la mémoire alloué par un trie
 static void _removeTrie(struct _trie** trie) {
@@ -46,6 +54,15 @@ static void _removeTrie(struct _trie** trie) {
     }
 }
 
+// Fonction pour initialiser le trie en ajoutant les transitions manquantes pour chaque caractère possible
+void initTrie(Trie trie) {
+    for (size_t c = 0; c <= UCHAR_MAX; c++) {
+        // Ajout de la transition si elle n'existe pas déjà
+        if (ProchainEtat(trie, 0, (unsigned char) c) == -1) {
+            AjouterTransition(trie, 0, (unsigned char) c, 0);
+        }
+    }
+}
 
 // Fonction pour créer un nouveau trie
 Trie createTrie(int maxNode) {
@@ -88,6 +105,16 @@ Trie createTrie(int maxNode) {
     return trie;
 }
 
+// Fonction pour ajouter des occurrences finales à un état donné
+void addFinite(Trie trie, int node, size_t nbOcc) {
+    trie -> finite[node] += nbOcc;
+}
+
+// Fonction pour obtenir le nombre d'occurrences finales pour un état donné
+size_t getFinitesNumber(Trie trie, int node) {
+    return trie -> finite[node];
+}
+
 // Fonction pour lire un mot depuis un fichier et mettre à jour le buffer
 int motFichier(FILE *file, char **buff, size_t *buffSize) {
     char *mot = fgets(*buff, (int) *buffSize, file);
@@ -119,6 +146,23 @@ int motFichier(FILE *file, char **buff, size_t *buffSize) {
     return 0;
 }
 
+
+// Fonction pour ajouter des mots depuis un fichier au trie
+int getWordFromFile(Trie trie, FILE *file) {
+    size_t buffSize = BUFFSIZE_INIT;
+    char *buff = malloc(BUFFSIZE_INIT);
+    if (buff == NULL) {
+        return -1;
+    }
+
+    // Lecture et ajout de chaque mot du fichier au trie
+    while (motFichier(file, &buff, &buffSize) != -1) {
+        insertWord(trie, (unsigned char *) buff);
+    }
+
+    free(buff);
+    return 0;
+}
 
 // Fonction pour ajouter un mot au trie
 void insertWord(Trie trie, unsigned char *mot) {
@@ -205,6 +249,12 @@ static int ProchainEtat(struct _trie *trie, int node, unsigned char letter) {
 size_t getTaille(int maxNode) {
     return (size_t)(((maxNode) - 1) / LOAD_FACTOR + 1);
 }
+
+// Fonction pour obtenir le prochain état dans le trie
+int getTransition(Trie trie, int node, unsigned char letter) {
+    return ProchainEtat(trie, node, letter);
+}
+
 
 // Fonction pour obtenir la taille du trie (nombre d'états utilisés)
 size_t getTailleTrie(Trie trie) {
