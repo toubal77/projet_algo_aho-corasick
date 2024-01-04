@@ -4,6 +4,9 @@
 #include <string.h>
 #include "trie.h"
 
+// Facteur de charge utilisé pour déterminer la taille initiale du tableau de transitions
+#define LOAD_FACTOR 0.75
+
 // Structure représentant un trie
 struct _list {
     int startNode;
@@ -83,6 +86,11 @@ Trie createTrie(int maxNode) {
     }
 
     return trie;
+}
+
+// Fonction qui calcule la taille du tableau 'finite'
+size_t getTaille(int maxNode) {
+    return (size_t)(((maxNode) - 1) / LOAD_FACTOR + 1);
 }
 
 // Fonction pour obtenir la taille du trie (nombre d'états utilisés)

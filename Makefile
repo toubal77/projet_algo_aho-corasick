@@ -2,7 +2,7 @@ CC = cc
 CFLAGS = -pedantic -Wconversion -Wextra -Werror -Wall -std=c11
 LDFLAGS= 
 
-all: genere-texte genere-mots
+all: genere-texte genere-mots ac-hachage
 
 genere-texte: genere-texte.o
 	$(CC) $^ $(LDFLAGS) -o $@
@@ -14,6 +14,12 @@ genere-mots: genere-mots.o
 	$(CC) $^ $(LDFLAGS) -o $@
 
 genere-mots.o: genere-mots.c
+	$(CC) -c $(CFLAGS) $^ -o $@
+
+ac-hachage: ac-hachage.o
+	$(CC) $^ $(LDFLAGS) -o $@
+
+ac-hachage.o: ac-hachage.c
 	$(CC) -c $(CFLAGS) $^ -o $@
 
 clean:
