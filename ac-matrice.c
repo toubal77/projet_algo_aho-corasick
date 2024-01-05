@@ -15,25 +15,6 @@ struct _trie {
     size_t *finite;
 };
 
-// Fonction utilitaire pour libérer la mémoire associée à un trie
-static void _removeTrie(struct _trie** trie) {
-    if (*trie != NULL) {
-        for (int **transition = (*trie) -> transition; 
-                transition < (*trie) -> transition + (*trie) -> maxNode;
-                ++transition) {
-            free(*transition);
-        }
-        free((*trie) -> transition);
-        free((*trie) -> finite);
-        free(*trie);
-        *trie = NULL;
-    }
-}
-
-// Fonction pour libérer la mémoire associée à un trie (interface publique)
-void removeTrie(Trie *trie) {
-    _removeTrie(trie);
-}
 
 // Fonction pour créer un nouveau trie
 Trie createTrie(int maxNode) {
@@ -181,4 +162,24 @@ void initTrie(Trie trie) {
             *transition = 0;
         }
     }
+}
+
+// Fonction utilitaire pour libérer la mémoire associée à un trie
+static void _removeTrie(struct _trie** trie) {
+    if (*trie != NULL) {
+        for (int **transition = (*trie) -> transition; 
+                transition < (*trie) -> transition + (*trie) -> maxNode;
+                ++transition) {
+            free(*transition);
+        }
+        free((*trie) -> transition);
+        free((*trie) -> finite);
+        free(*trie);
+        *trie = NULL;
+    }
+}
+
+// Fonction pour libérer la mémoire associée à un trie (interface publique)
+void removeTrie(Trie *trie) {
+    _removeTrie(trie);
 }
