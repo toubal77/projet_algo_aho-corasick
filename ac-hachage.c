@@ -28,6 +28,22 @@ struct _trie {
     size_t *finite;
 };
 
+void removeTrie(Trie *trie);
+static void _removeTrie(struct _trie** trie) ;
+void initTrie(Trie trie);
+Trie createTrie(int maxNode);
+void addFinite(Trie trie, int node, size_t nbOcc);
+size_t getFinitesNumber(Trie trie, int node);
+int motFichier(FILE *file, char **buff, size_t *buffSize);
+int getWordFromFile(Trie trie, FILE *file) ;
+void insertWord(Trie trie, unsigned char *mot) ;
+static int AjouterTransition(struct _trie *trie, int startNode,
+        unsigned char letter, int targetNode);
+static inline size_t hashFunction(int node, unsigned char letter) ;
+static int ProchainEtat(struct _trie *trie, int node, unsigned char letter);
+size_t getTaille(int maxNode);
+int getTransition(Trie trie, int node, unsigned char letter);
+size_t getTailleTrie(Trie trie);
 // Fonction pour libérer la mémoire associée à un trie (interface publique)
 void removeTrie(Trie *trie) {
     _removeTrie(trie);
