@@ -3,6 +3,8 @@
 #include <stdio.h>
 #include "trie.h"
 
+typedef struct _queue* Queue;
+
 typedef struct _ac* AC;
 
 AC createAC(Trie trie);

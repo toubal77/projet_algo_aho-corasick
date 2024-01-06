@@ -19,13 +19,16 @@ genere-mots.o: genere-mots.c
 ac-hachage: ac-hachage.o
 	$(CC) $^ $(LDFLAGS) -o $@
 
-ac-hachage.o: ac-hachage.c
+ac-hachage.o: ac-hachage.c ahocorasick.o
 	$(CC) -c $(CFLAGS) $^ -o $@
 
-ac-matrice: ac-matrice.o
+ac-matrice: ac-matrice.o ahocorasick.o
 	$(CC) $^ $(LDFLAGS) -o $@
 
 ac-matrice.o: ac-matrice.c
+	$(CC) -c $(CFLAGS) $^ -o $@
+
+ahocorasick.o : ahocorasick.c
 	$(CC) -c $(CFLAGS) $^ -o $@
 
 clean:
