@@ -9,6 +9,8 @@ typedef struct _ac* AC;
 
 AC createAC(Trie trie);
 
+void ACremove(AC* ac);
+
 size_t getOccurences(AC ac, FILE *file);
 
 #endif

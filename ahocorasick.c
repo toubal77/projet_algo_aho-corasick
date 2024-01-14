@@ -28,7 +28,7 @@ void completer(AC ac);
 bool isEmptyQueue(Queue q);
 void pushQueue(Queue q, int elem) ;
 int popQueue(Queue q);
-void removeAC(AC* ac) ;
+void ACremove(AC* ac);
 void removeQueue(Queue *q);
 // Fonction pour créer un nouvel automate d'Aho-Corasick à partir d'un trie donné
 AC createAC(Trie trie) {
@@ -91,7 +91,7 @@ void completer(AC ac) {
     // Création d'une file pour l'algorithme de complétion
     Queue file = createQueue(getTailleTrie(ac->trie));
     if (file == NULL) {
-        removeAC(&ac);
+        ACremove(&ac);
         return;
     }
 
@@ -149,7 +149,7 @@ int popQueue(Queue q) {
 }
 
 // Fonction pour libérer la mémoire associée à un automate d'Aho-Corasick
-void removeAC(AC* ac) {
+void ACremove(AC* ac) {
     free(*ac);
     *ac = NULL;
 }

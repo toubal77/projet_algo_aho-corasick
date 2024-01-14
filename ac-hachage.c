@@ -149,7 +149,7 @@ int motFichier(FILE *file, char **buff, size_t *buffSize) {
 
         mot = fgets(*buff + len, (int) *buffSize / 2, file);
         if (mot == NULL) {
-            return *(*buff + len) == '\0' ? 0 : -1;
+            return *(*buff + len) == '\0' ? -1 : 0;
         }
 
         len = strlen(*buff);
